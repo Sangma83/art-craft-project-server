@@ -32,7 +32,7 @@ async function run() {
 
 
    const craftCollection = client.db('craftDB').collection('craft');
-  //  const userCollection = client.db('coffeeDB').collection('user');
+   const categoriesCollection = client.db('craftDB').collection('categories');
    
 
   app.get('/crafts', async(req, res) =>{
@@ -43,9 +43,45 @@ async function run() {
  
   app.get('/crafts/:email', async(req, res) =>{
     console.log(req.params.email);
-    // const id = req.params.id;
-    // const query = {_id: new ObjectId(id)}
     const result = await craftCollection.find({email: req.params.email}).toArray();
+    res.send(result);
+  })
+  // app.get('/crafts/:id', async(req, res) =>{
+  //   const id = req.params.id;
+  //   const query = {_id: new ObjectId(id)};
+  //   const result = await craftCollection.findOne(query);
+  //   res.send(result);
+  // })
+
+  app.get('/craft/:id', async(req, res) =>{
+    console.log(req.params.id);
+    const id = req.params.id;
+    console.log(id);
+    // const query = {_id: new ObjectId(id)};
+    const result = await craftCollection.findOne({_id: new ObjectId(req.params.id)});
+    
+    res.send(result);
+  })
+
+  app.put('/craftUpdate/:id', async(req, res) => {
+    console.log(req.params.id);
+    const query = {_id: new ObjectId(req.params.id)};
+    const data = {
+      $set: {
+        photo: req.body.photo,
+        name: req.body.name,
+        subcategory: req.body.subcategory,
+        details: req.body.details,
+        price: req.body.price,
+        rating: req.body.rating,
+        custom: req.body.custom,
+        stock: req.body.stock,
+        username: req.body.username,
+        time: req.body.time
+      }
+    }
+    const result = await craftCollection.updateOne(query, data);
+    console.log(result);
     res.send(result);
   })
   
@@ -85,40 +121,13 @@ async function run() {
 
   // //user related apis
 
-  // app.get('/user', async(req, res) =>{
-  //   const cursor = userCollection.find();
-  //   const users = await cursor.toArray();
-  //   res.send(users);
-  // })
+  app.get('/categories', async(req, res) =>{
+    const cursor = categoriesCollection.find();
+    const category = await cursor.toArray();
+    res.send(category);
+  })
 
-  // app.post('/user', async(req, res) =>{
-  //   const user = req.body;
-  //   console.log(user);
-  //   const result = await userCollection.insertOne(user);
-  //   res.send(result);
-  // })
-
-  // app.patch('/crafts', async(req, res) =>{
-  //   const user = req.body;
-  //   const filter = { email: user.email};
-  //   const updatedDoc = {
-  //     $set: {
-  //       lastLoggedAt: user.lastLoggedAt
-  //     }
-  //   }
-  //   const result = await craftCollection.findOne(filter, updatedDoc);
-  //   res.send(result);
-  // })
-
-  // app.delete('/user/:id', async(req, res) =>{
-  //   const id = req.params.id;
-  //   const query = {_id: new ObjectId(id)};
-  //   const result = await userCollection.deleteOne(query);
-  //   res.send(result);
-  // })
-
-    // Send a ping to confirm a successful connection
-    // await client.db("admin").command({ ping: 1 });
+ 
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
     // Ensures that the client will close when you finish/error
