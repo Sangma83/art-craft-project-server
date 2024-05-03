@@ -1,5 +1,5 @@
 const express = require('express');
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 require('dotenv').config()
 const cors = require('cors');
 const app = express();
@@ -41,12 +41,13 @@ async function run() {
     res.send(result);
   })
  
-  // app.get('/coffee/:id', async(req, res) =>{
-  //   const id = req.params.id;
-  //   const query = {_id: new ObjectId(id)}
-  //   const result = await coffeeCollection.findOne(query);
-  //   res.send(result);
-  // })
+  app.get('/crafts/:email', async(req, res) =>{
+    console.log(req.params.email);
+    // const id = req.params.id;
+    // const query = {_id: new ObjectId(id)}
+    const result = await craftCollection.find({email: req.params.email}).toArray();
+    res.send(result);
+  })
   
   app.post('/crafts', async(req, res) =>{
   const newCraft = req.body;
@@ -55,7 +56,7 @@ async function run() {
   res.send(result)
   })
 
-  // app.put('/coffee/:id', async(req, res) =>{
+  // app.put('/crafts/:id', async(req, res) =>{
   //   const id = req.params.id;
   //   const filter = {_id: new ObjectId(id)};
   //   const options = {upsert: true};
@@ -63,22 +64,22 @@ async function run() {
   //   const coffee = {
   //     $set: {
   //       name: updatedCoffee.name, 
-  //       quantity: updatedCoffee.quantity,
-  //       supplier: updatedCoffee.supplier,
-  //       taste: updatedCoffee.taste,
-  //       category: updatedCoffee.category,
+  //       subcategory: updatedCoffee.subcategory,
+  //       price: updatedCoffee.price,
+  //       stock: updatedCoffee.stock,
+  //       custom: updatedCoffee.custom,
   //       details: updatedCoffee.details,
   //       photo: updatedCoffee.photo
   //     }
   //   }
-  //   const result = await coffeeCollection.updateOne(filter, coffee, options);
+  //   const result = await coffeeCollection.findOne(filter, coffee, options);
   //   res.send(result);
   // })
 
-  // app.delete('/coffee/:id', async(req, res) =>{
+  // app.delete('/crafts/:id', async(req, res) =>{
   //   const id = req.params.id;
   //   const query = {_id: new ObjectId(id)};
-  //   const result = await coffeeCollection.deleteOne(query);
+  //   const result = await craftCollection.deleteOne(query);
   //   res.send(result);
   // })
 
@@ -97,7 +98,7 @@ async function run() {
   //   res.send(result);
   // })
 
-  // app.patch('/user', async(req, res) =>{
+  // app.patch('/crafts', async(req, res) =>{
   //   const user = req.body;
   //   const filter = { email: user.email};
   //   const updatedDoc = {
@@ -105,7 +106,7 @@ async function run() {
   //       lastLoggedAt: user.lastLoggedAt
   //     }
   //   }
-  //   const result = await userCollection.updateOne(filter, updatedDoc);
+  //   const result = await craftCollection.findOne(filter, updatedDoc);
   //   res.send(result);
   // })
 
