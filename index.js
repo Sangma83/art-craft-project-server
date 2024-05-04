@@ -104,11 +104,11 @@ async function run() {
     res.send(categories);
 });
 
-// app.post('/categories', async(req, res) =>{
-//     const newCategory = req.body;
-//     const result = await categoriesCollection.insertOne(newCategory);
-//     res.send(result);
-// });
+app.post('/categories', async(req, res) =>{
+    const newCategory = req.body;
+    const result = await categoriesCollection.insertOne(newCategory);
+    res.send(result);
+});
 
 
  
