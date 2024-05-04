@@ -46,12 +46,7 @@ async function run() {
     const result = await craftCollection.find({email: req.params.email}).toArray();
     res.send(result);
   })
-  // app.get('/crafts/:id', async(req, res) =>{
-  //   const id = req.params.id;
-  //   const query = {_id: new ObjectId(id)};
-  //   const result = await craftCollection.findOne(query);
-  //   res.send(result);
-  // })
+ 
 
   app.get('/craft/:id', async(req, res) =>{
     console.log(req.params.id);
@@ -92,25 +87,7 @@ async function run() {
   res.send(result)
   })
 
-  // app.put('/crafts/:id', async(req, res) =>{
-  //   const id = req.params.id;
-  //   const filter = {_id: new ObjectId(id)};
-  //   const options = {upsert: true};
-  //   const updatedCoffee = req.body;
-  //   const coffee = {
-  //     $set: {
-  //       name: updatedCoffee.name, 
-  //       subcategory: updatedCoffee.subcategory,
-  //       price: updatedCoffee.price,
-  //       stock: updatedCoffee.stock,
-  //       custom: updatedCoffee.custom,
-  //       details: updatedCoffee.details,
-  //       photo: updatedCoffee.photo
-  //     }
-  //   }
-  //   const result = await coffeeCollection.findOne(filter, coffee, options);
-  //   res.send(result);
-  // })
+
 
   app.delete('/crafts/:id', async(req, res) =>{
     const id = req.params.id;
@@ -119,13 +96,20 @@ async function run() {
     res.send(result);
   })
 
-  // //user related apis
+  //categries related apis
 
   app.get('/categories', async(req, res) =>{
     const cursor = categoriesCollection.find();
-    const category = await cursor.toArray();
-    res.send(category);
-  })
+    const categories = await cursor.toArray();
+    res.send(categories);
+});
+
+// app.post('/categories', async(req, res) =>{
+//     const newCategory = req.body;
+//     const result = await categoriesCollection.insertOne(newCategory);
+//     res.send(result);
+// });
+
 
  
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
